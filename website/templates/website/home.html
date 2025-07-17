@@ -1,80 +1,225 @@
 {% extends 'website/base.html' %}
+{% load static %}
 
 {% block title %}Ana Sayfa - Django Website{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-8 mb-8 text-white">
-    <div class="max-w-4xl">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Django Website'ye Hoş Geldiniz! 🎉</h1>
-        <p class="text-xl mb-6 text-blue-100">Bu, Django ile oluşturulmuş basit bir website örneğidir. Tailwind CSS ile responsive tasarım içerir.</p>
-        <a href="{% url 'about' %}" class="bg-white text-blue-600 hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 inline-block">
-            Daha Fazla Bilgi →
-        </a>
-    </div>
-</div>
+<div class="flex flex-col xl:flex-row gap-12 p-8 md:p-16">
+    <!-- Hero Section -->
+    <div class="w-full xl:w-1/2">
+        <section class="flex flex-col items-center xl:items-start mb-12">
+            {% if profile %}
+            <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}"
+                class="w-48 h-48 rounded-full mb-6 object-cover" />
+            <h1 class="ml-1 text-4xl font-bold mb-4">{{ profile.name }}</h1>
+            {% if profile.title %}
+            <h2 class="ml-1 text-xl text-gray-600 mb-4">{{ profile.title }}</h2>
+            {% endif %}
+            <div class="ml-1 max-w-3xl flex flex-col gap-y-3">
+                <div class="text-lg text-center xl:text-left text-black leading-relaxed">
+                    {{ profile.bio|linebreaks }}
 
-<!-- Features Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="card hover:shadow-lg transition-shadow duration-200">
-        <div class="text-center">
-            <div class="text-4xl mb-4">🚀</div>
-            <h5 class="text-xl font-semibold mb-3 text-gray-800">Modern Tasarım</h5>
-            <p class="text-gray-600 mb-4">Tailwind CSS ile utility-first yaklaşım ve responsive tasarım kullanıyoruz.</p>
-            <a href="#" class="btn-outline">Detaylar</a>
-        </div>
+                    {% if profile.get_tech_stack_list %}
+                    <div class="mt-4">
+                        <span class="font-medium text-lg">Tech Stack:</span>
+                        <ul class="mt-2 grid grid-cols-2 gap-2">
+                            {% for tech in profile.get_tech_stack_list %}
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                <span class="text-gray-700">{{ tech }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </section>
     </div>
-    
-    <div class="card hover:shadow-lg transition-shadow duration-200">
-        <div class="text-center">
-            <div class="text-4xl mb-4">⚡</div>
-            <h5 class="text-xl font-semibold mb-3 text-gray-800">Hızlı Geliştirme</h5>
-            <p class="text-gray-600 mb-4">Django framework ile hızlı ve güvenli web uygulamaları geliştirin.</p>
-            <a href="#" class="btn-outline">Detaylar</a>
-        </div>
-    </div>
-    
-    <div class="card hover:shadow-lg transition-shadow duration-200">
-        <div class="text-center">
-            <div class="text-4xl mb-4">🔒</div>
-            <h5 class="text-xl font-semibold mb-3 text-gray-800">Güvenli</h5>
-            <p class="text-gray-600 mb-4">Django'nun yerleşik güvenlik özellikleri ile uygulamanız güvende.</p>
-            <a href="#" class="btn-outline">Detaylar</a>
-        </div>
-    </div>
-</div>
 
-<!-- Learning Progress -->
-<div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">Neler Öğrendik?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="space-y-3">
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">Django projesi oluşturma</span>
+    <!-- Features Grid -->
+    <div class="w-full xl:w-1/2 flex flex-col gap-4">
+        <div class="flex flex-col xl:flex-row gap-4">
+            <!-- Social Links Grid -->
+            <div class="w-full xl:w-1/2 grid grid-cols-2 gap-4">
+                {% for social in social_links %}
+                <div class="h-48 flex {{ social.background_color }} border border-gray-200 rounded-3xl">
+                    <div class="flex flex-col items-start justify-center p-4 md:px-4 md:py-0">
+                        {% if social.icon_type == 'custom' and social.icon %}
+                        <img src="{{ social.icon.url }}" alt="{{ social.name }}" class="h-12" />
+                        {% else %}
+                        {{ social.get_svg_icon|safe }}
+                        {% endif %}
+                        <h1 class="mt-3">{{ social.name }}</h1>
+                        <h3 class="text-gray-700">{{ social.username }}</h3>
+                        <a href="{{ social.url }}" target="_blank" rel="noopener noreferrer">
+                            <button
+                                class="cursor-pointer {{ social.button_color }} text-white text-sm mt-4 px-4 py-2 rounded-xl hover:opacity-80 transition-opacity">
+                                Follow
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <!-- Fallback social links if none exist -->
+                <!-- GitHub Card -->
+                <div class="h-48 flex bg-gray-200 border border-gray-200 rounded-3xl">
+                    <div class="flex flex-col items-start justify-center p-4 md:px-4 md:py-0">
+                        <!-- GitHub SVG Icon -->
+                        <svg class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                        <h1 class="mt-3">Github</h1>
+                        <h3 class="text-gray-700">@ozcaneren</h3>
+                        <a href="https://github.com/ozcaneren" target="_blank" rel="noopener noreferrer">
+                            <button
+                                class="cursor-pointer bg-[#666769] text-white text-sm mt-4 px-4 py-2 rounded-xl hover:bg-gray-600 transition-colors">
+                                Follow
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Instagram Card -->
+                <div class="h-48 flex bg-red-100 border border-gray-200 rounded-3xl">
+                    <div class="flex flex-col items-start justify-center p-4 md:px-4 md:py-0">
+                        <!-- Instagram SVG Icon -->
+                        <svg class="h-12 w-12 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987s11.987-5.367 11.987-11.987C24.004 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.349-1.051-2.349-2.348s1.052-2.349 2.349-2.349 2.348 1.052 2.348 2.349-1.051 2.348-2.348 2.348zm7.718 0c-1.297 0-2.349-1.051-2.349-2.348s1.052-2.349 2.349-2.349 2.348 1.052 2.348 2.349-1.051 2.348-2.348 2.348z" />
+                        </svg>
+                        <h1 class="mt-3">Instagram</h1>
+                        <h3 class="text-gray-700">@erenozcan17</h3>
+                        <a href="https://www.instagram.com/erenozcan17/" target="_blank" rel="noopener noreferrer">
+                            <button
+                                class="cursor-pointer bg-[#aa3690] text-white text-sm mt-4 px-4 py-2 rounded-xl hover:bg-pink-600 transition-colors">
+                                Follow
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- LinkedIn Card -->
+                <div class="h-48 flex bg-blue-100 border border-gray-200 rounded-3xl">
+                    <div class="flex flex-col items-start justify-center p-4 md:px-4 md:py-0">
+                        <!-- LinkedIn SVG Icon -->
+                        <svg class="h-12 w-12 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                        <h1 class="mt-3">LinkedIn</h1>
+                        <h3 class="text-gray-700">@eren-ozcan</h3>
+                        <a href="https://www.linkedin.com/in/eren-ozcan/" target="_blank" rel="noopener noreferrer">
+                            <button
+                                class="cursor-pointer bg-[#2e8ec2] text-white text-sm mt-4 px-4 py-2 rounded-xl hover:bg-blue-600 transition-colors">
+                                Follow
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- X (Twitter) Card -->
+                <div class="h-48 flex bg-[#d8d8d8] border border-gray-200 rounded-3xl">
+                    <div class="flex flex-col items-start justify-center p-4 md:px-4 md:py-0">
+                        <!-- X (Twitter) SVG Icon -->
+                        <svg class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                        <h1 class="mt-3">X</h1>
+                        <h3 class="text-gray-700">@ozcaneren</h3>
+                        <a href="https://x.com/erenozcandev" target="_blank" rel="noopener noreferrer">
+                            <button
+                                class="cursor-pointer bg-gray-500 text-white text-sm mt-4 px-4 py-2 rounded-xl hover:bg-gray-600 transition-colors">
+                                Follow
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">Django app oluşturma</span>
-            </div>
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">Templates kullanımı</span>
+
+            <!-- CV Section -->
+            <div class="w-full xl:w-1/2">
+                {% if profile and profile.cv_file %}
+                <a href="{{ profile.cv_file.url }}" class="w-full block" target="_blank" rel="noopener noreferrer"
+                    download>
+                    {% else %}
+                    <a href="#" class="w-full block">
+                        {% endif %}
+                        <div
+                            class="rounded-3xl flex items-center justify-center border border-gray-200 relative group cursor-pointer bg-gradient-to-br from-blue-50 to-indigo-100 hover:from-blue-100 hover:to-indigo-200 transition-all duration-300">
+                            {% if profile and profile.cv_image %}
+                            <img src="{{ profile.cv_image.url }}" alt="CV" class="h-[400px] rounded-3xl object-cover" />
+                            {% else %}
+                            <div class="h-[400px] w-full flex flex-col items-center justify-center">
+                                <!-- CV Icon -->
+                                <svg class="w-24 h-24 text-blue-600 mb-4" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">CV İndir</h3>
+                                {% if profile and profile.cv_file %}
+                                <p class="text-gray-600 text-center">PDF formatında CV'mi indir</p>
+                                {% else %}
+                                <p class="text-gray-600 text-center">CV henüz yüklenmemiş</p>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            {% if profile and profile.cv_image %}
+                            <div
+                                class="absolute inset-0 backdrop-blur-[2px] bg-black/10 md:backdrop-blur-sm md:bg-black/20 flex items-center justify-center rounded-3xl transition-all duration-300 group-hover:backdrop-blur-[1px] group-hover:bg-black/5">
+                                <div class="text-center">
+                                    <span class="text-white text-4xl font-bold block mb-2">CV</span>
+                                    {% if profile.cv_file %}
+                                    <span class="text-white text-sm bg-black/30 px-3 py-1 rounded-full">PDF İndir</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </a>
             </div>
         </div>
-        <div class="space-y-3">
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">Base template ile navbar ve footer</span>
+
+        <!-- Projects Grid -->
+        <div class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center">
+            {% for project in projects %}
+            <div
+                class="w-full lg:w-[calc(50%-0.5rem)] h-[400px] p-4 border border-gray-200 {{ project.background_color }} rounded-3xl">
+                <div class="flex flex-col items-start justify-center gap-2">
+                    <div class="w-full flex justify-between gap-2">
+                        {% if project.hosting_platform == 'custom' and project.custom_logo %}
+                            <img src="{{ project.custom_logo.url }}" alt="{{ project.get_hosting_name }}" class="h-12 object-contain" />
+                        {% else %}
+                            <img src="{% static project.get_hosting_logo_url %}" alt="{{ project.get_hosting_name }}" class="h-12 object-contain" />
+                        {% endif %}
+                        <h3 class="text-gray-700 font-medium text-sm">projects</h3>
+                    </div>
+                    <h1 class="font-medium text-gray-900 text-xl">
+                        {{ project.title }}
+                    </h1>
+                    {% if project.description %}
+                    <p class="text-gray-600 text-sm">{{ project.description|truncatewords:20 }}</p>
+                    {% endif %}
+                    <div class="mt-4 w-full text-center h-60 bg-gray-200 rounded-xl">
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}"
+                                class="w-full h-full object-contain rounded-xl" />
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">Tailwind CSS ile modern tasarım</span>
+            {% empty %}
+            <div class="w-full text-center py-8">
+                <p class="text-gray-500">Henüz proje eklenmemiş.</p>
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="text-green-500 text-xl">✅</span>
-                <span class="text-gray-700">URL routing</span>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
