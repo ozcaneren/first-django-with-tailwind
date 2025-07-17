@@ -1,4 +1,4 @@
-#!/home/eren/dev/django-ogreniyorum/venv/bin/python3
+#!/home/eren/dev/first-django-with-tailwind/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
