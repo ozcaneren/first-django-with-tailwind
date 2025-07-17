@@ -1,0 +1,81 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Ana Sayfa - Django Website{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-8 mb-8 text-white">
+    <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Django Website'ye Hoş Geldiniz! 🎉</h1>
+        <p class="text-xl mb-6 text-blue-100">Bu, Django ile oluşturulmuş basit bir website örneğidir. Tailwind CSS ile responsive tasarım içerir.</p>
+        <a href="{% url 'about' %}" class="bg-white text-blue-600 hover:bg-blue-50 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 inline-block">
+            Daha Fazla Bilgi →
+        </a>
+    </div>
+</div>
+
+<!-- Features Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="card hover:shadow-lg transition-shadow duration-200">
+        <div class="text-center">
+            <div class="text-4xl mb-4">🚀</div>
+            <h5 class="text-xl font-semibold mb-3 text-gray-800">Modern Tasarım</h5>
+            <p class="text-gray-600 mb-4">Tailwind CSS ile utility-first yaklaşım ve responsive tasarım kullanıyoruz.</p>
+            <a href="#" class="btn-outline">Detaylar</a>
+        </div>
+    </div>
+    
+    <div class="card hover:shadow-lg transition-shadow duration-200">
+        <div class="text-center">
+            <div class="text-4xl mb-4">⚡</div>
+            <h5 class="text-xl font-semibold mb-3 text-gray-800">Hızlı Geliştirme</h5>
+            <p class="text-gray-600 mb-4">Django framework ile hızlı ve güvenli web uygulamaları geliştirin.</p>
+            <a href="#" class="btn-outline">Detaylar</a>
+        </div>
+    </div>
+    
+    <div class="card hover:shadow-lg transition-shadow duration-200">
+        <div class="text-center">
+            <div class="text-4xl mb-4">🔒</div>
+            <h5 class="text-xl font-semibold mb-3 text-gray-800">Güvenli</h5>
+            <p class="text-gray-600 mb-4">Django'nun yerleşik güvenlik özellikleri ile uygulamanız güvende.</p>
+            <a href="#" class="btn-outline">Detaylar</a>
+        </div>
+    </div>
+</div>
+
+<!-- Learning Progress -->
+<div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Neler Öğrendik?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-3">
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">Django projesi oluşturma</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">Django app oluşturma</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">Templates kullanımı</span>
+            </div>
+        </div>
+        <div class="space-y-3">
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">Base template ile navbar ve footer</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">Tailwind CSS ile modern tasarım</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-green-500 text-xl">✅</span>
+                <span class="text-gray-700">URL routing</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

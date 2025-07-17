@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Website{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'website/style.css' %}">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand': {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full flex flex-col bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-brand-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Brand -->
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center space-x-2">
+                        <span class="text-2xl">🚀</span>
+                        <span class="text-white text-xl font-bold">Django Site</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="{% url 'home' %}" class="navbar-link">Ana Sayfa</a>
+                        <a href="{% url 'about' %}" class="navbar-link">Hakkımızda</a>
+                        <a href="{% url 'contact' %}" class="navbar-link">İletişim</a>
+                        <a href="/admin/" class="navbar-link">Admin</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="bg-brand-600 inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-600 focus:ring-white" id="mobile-menu-button">
+                        <span class="sr-only">Menüyü aç</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-brand-700">
+                <a href="{% url 'home' %}" class="text-white hover:bg-brand-600 block px-3 py-2 rounded-md text-base font-medium">Ana Sayfa</a>
+                <a href="{% url 'about' %}" class="text-white hover:bg-brand-600 block px-3 py-2 rounded-md text-base font-medium">Hakkımızda</a>
+                <a href="{% url 'contact' %}" class="text-white hover:bg-brand-600 block px-3 py-2 rounded-md text-base font-medium">İletişim</a>
+                <a href="/admin/" class="text-white hover:bg-brand-600 block px-3 py-2 rounded-md text-base font-medium">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Brand Section -->
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Django Website</h5>
+                    <p class="text-gray-300">Django ile oluşturulmuş basit bir website örneği.</p>
+                </div>
+                
+                <!-- Links Section -->
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Linkler</h5>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'home' %}" class="text-gray-300 hover:text-white transition-colors duration-200">Ana Sayfa</a></li>
+                        <li><a href="{% url 'about' %}" class="text-gray-300 hover:text-white transition-colors duration-200">Hakkımızda</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-gray-300 hover:text-white transition-colors duration-200">İletişim</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Section -->
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">İletişim</h5>
+                    <div class="space-y-2 text-gray-300">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            info@djangosite.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            +90 555 123 45 67
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            İstanbul, Türkiye
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8">
+                <div class="text-center text-gray-400">
+                    <p>&copy; 2025 Django Website. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
