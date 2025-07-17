@@ -61,7 +61,7 @@ class Project(models.Model):
     class Meta:
         verbose_name = "Proje"
         verbose_name_plural = "Projeler"
-        ordering = ['-created_at']
+        ordering = ['created_at']
     
     def __str__(self):
         return self.title
