@@ -18,26 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
+from django.urls import re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('website.urls')),
 ]
 
-# Development ve production'da media files serve etmek için
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# Production için media files ayarı
-if not settings.DEBUG:
-    # Production'da media files için
-    settings.MEDIA_URL = '/media/'
-    settings.MEDIA_ROOT = settings.BASE_DIR / 'media'
-    
-    # CSRF ayarları da buraya ekleyelim
-    settings.CSRF_COOKIE_SECURE = True
-    settings.CSRF_COOKIE_SAMESITE = 'Lax'
-    settings.SESSION_COOKIE_SECURE = True
+# Media files için routing - Hem development hem production
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # Development ayarları
-    settings.MEDIA_URL = '/media/'
-    settings.MEDIA_ROOT = settings.BASE_DIR / 'media'
+    # Production'da da media files serve et
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
