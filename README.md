@@ -1,5 +1,9 @@
 # Portfolio Website - Next.js to Django Migration
 
+## Demo Link
+
+https://web-production-c341.up.railway.app/
+
 Bu proje, Next.js ile yazılmış bir portfolio websitesinin Django'ya çevrilmesi ve admin paneli ile güçlendirilmesi sürecini göstermektedir. Geliştirme sürecinde AI asistanından yardım alınmıştır.
 
 ## 🔄 Proje Geçişi
