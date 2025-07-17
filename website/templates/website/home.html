@@ -9,8 +9,14 @@
     <div class="w-full xl:w-1/2">
         <section class="flex flex-col items-center xl:items-start mb-12">
             {% if profile %}
+            {% if profile.profile_image %}
             <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}"
                 class="w-48 h-48 rounded-full mb-6 object-cover" />
+            {% else %}
+            <div class="w-48 h-48 rounded-full mb-6 bg-gray-300 flex items-center justify-center">
+                <span class="text-gray-500">Resim Yok</span>
+            </div>
+            {% endif %}
             <h1 class="ml-1 text-4xl font-bold mb-4">{{ profile.name }}</h1>
             {% if profile.title %}
             <h2 class="ml-1 text-xl text-gray-600 mb-4">{{ profile.title }}</h2>

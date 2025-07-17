@@ -24,9 +24,20 @@ urlpatterns = [
     path('', include('website.urls')),
 ]
 
-# Development ve production'da media files için
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Development ve production'da media files serve etmek için
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Production için media files ayarı
+if not settings.DEBUG:
+    # Production'da media files için
+    settings.MEDIA_URL = '/media/'
+    settings.MEDIA_ROOT = settings.BASE_DIR / 'media'
+    
+    # CSRF ayarları da buraya ekleyelim
+    settings.CSRF_COOKIE_SECURE = True
+    settings.CSRF_COOKIE_SAMESITE = 'Lax'
+    settings.SESSION_COOKIE_SECURE = True
 else:
-    # Production'da da media files serve et
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Development ayarları
+    settings.MEDIA_URL = '/media/'
+    settings.MEDIA_ROOT = settings.BASE_DIR / 'media'
