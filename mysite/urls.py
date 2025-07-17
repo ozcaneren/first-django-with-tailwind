@@ -24,6 +24,9 @@ urlpatterns = [
     path('', include('website.urls')),
 ]
 
-# Media files serving in development
+# Development ve production'da media files için
 if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Production'da da media files serve et
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
